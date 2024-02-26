@@ -1,0 +1,23 @@
+import subprocess
+import sys
+
+def download_package(package_name, version):
+    try:
+        subprocess.check_call([sys.executable, '-m', 'pip', 'download', '--no-deps', f'{package_name}=={version}'])
+        print(f"Successfully downloaded {package_name} {version}")
+    except subprocess.CalledProcessError as e:
+        print(f"Error downloading {package_name} {version}: {e}")
+
+def download_packages_from_file(file_path):
+    with open(file_path, 'r') as file:
+        for line in file:
+            package_info = line.strip().split()
+            if len(package_info) == 2:
+                package_name, version = package_info
+                download_package(package_name, version)
+            else:
+                print(f"Invalid line format: {line}")
+
+if __name__ == "__main__":
+    file_path = input("Enter the path to the text file containing package names and versions: ")
+    download_packages_from_file(file_path)
