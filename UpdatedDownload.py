@@ -68,14 +68,21 @@ def download_packages_from_list(file_path, download_dir=None):
 def main():
     parser = argparse.ArgumentParser(description="Download packages specified in a text file.")
     parser.add_argument("file_path", help="Path to the text file containing package names and versions.")
-    parser.add_argument("--download_dir", "-d", help="Directory to save the downloaded packages.")
+    parser.add_argument("download_dir", help="Directory to save the downloaded packages.")
     args = parser.parse_args()
 
     file_path = args.file_path
     download_dir = args.download_dir
 
-    if not download_dir:
-        download_dir = tempfile.mkdtemp()
+    if not os.path.isfile(file_path):
+        print("Error: The specified file does not exist.")
+        parser.print_usage()
+        return
+
+    if not os.path.isdir(download_dir):
+        print("Error: The specified download directory does not exist.")
+        parser.print_usage()
+        return
 
     downloaded_packages = download_packages_from_list(file_path, download_dir)
     if downloaded_packages:
