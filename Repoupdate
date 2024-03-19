@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# Default values for package list file and output directory
+PYPI_PACKAGE_LIST=${PYPI_PACKAGE_LIST:-"package_list.txt"}
+PYPI_REPO_DIR=${PYPI_REPO_DIR:-"/path/to/repo/dir"}
+
+# Supported Python versions
+PYTHON_VERSIONS=(3.9 3.10 3.11 3.12)
+
+# Loop over each supported python version and run download.py
+for version in "${PYTHON_VERSIONS[@]}"
+do
+    # Activate the Python version
+    ml python/${version}
+
+    # Run download.py with package list and repo directory
+    ./download.py "$PYPI_PACKAGE_LIST" "$PYPI_REPO_DIR"
+done
